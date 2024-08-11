@@ -24,8 +24,10 @@ def create_app(config_filename="config.py"):
     app.config.from_prefixed_env()
 
     from app.blueprints.core.views import core_api
+    from app.blueprints.auth.views import auth
 
     app.register_blueprint(core_api)
+    app.register_blueprint(auth, url_prefix="/auth")
 
     # Set the custom JSON encoder in the Flask app
     app.json = CustomJSONEncoder(app)
