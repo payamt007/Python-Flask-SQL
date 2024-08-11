@@ -1,0 +1,80 @@
+[tool.poetry]
+name = "xeneta-api"
+version = "0.0.1"
+description = "Xeneta Flask app"
+authors = ["Payam Taheri"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "^3"
+gunicorn = "^22"
+psycopg = { version = "^3", extras = ["binary", "pool"] }
+sqlalchemy = "^2"
+redis = "^5"
+bcrypt = "^4"
+Flask-JWT-Extended = "^4"
+Flask-Limiter = { version = "^3", extras = ["redis"] }
+
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8"
+
+
+[tool.poetry.group.dev.dependencies]
+commitizen = "^3"
+
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.5"
+mypy = "^1"
+
+[tool.poetry.group.mypy.dependencies]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+fix = true
+indent-width = 4
+line-length = 88
+target-version = "py312"
+exclude = ["migrations/*.*", "alembic/*.*"]
+
+lint.select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "B", # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+lint.ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+    "W191", # indentation contains tabs
+]
+
+[tool.ruff.lint.isort]
+known-third-party = ["fastapi", "pydantic", "starlette"]
+
+
+[tool.mypy]
+python_version = 3.12
+exclude = ['.venv/*.*', 'app/songs/models.py', 'migrations/*.*', "alembic/*.*"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.3"
+tag_format = "v$version"
+version_files = [
+    "README.md",
+    "pyproject.toml:version",
+    "app/__init__.py:__version__",
+]
+major_version_zero = true

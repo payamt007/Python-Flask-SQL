@@ -1,0 +1,35 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-DB
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  cache:
+    image: redis:7.4-alpine
+    ports:
+      - "6380:6379"
+  db_optimized:
+    build:
+      context: .
+      dockerfile: Dockerfile-DB-optimized
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_optimized_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  postgres_optimized_data:
