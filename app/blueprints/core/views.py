@@ -19,7 +19,7 @@ def home_page_message():
     return "Hello World"
 
 
-def get_ports_for_region(region_slug):
+def get_ports_for_region(region_slug: str) -> str:
     sql_str = f"""
             WITH RECURSIVE region_ports AS (
                 SELECT code FROM ports WHERE parent_slug = '{region_slug}'
@@ -32,6 +32,7 @@ def get_ports_for_region(region_slug):
         """
     with engine.connect() as conn:
         results = conn.execute(text(sql_str))
+        # Format of SQL query was changed so that can be easily used in other SQL query within SQL `IN` condition
         result_list = [row[0] for row in results.fetchall()]
         result_list_str = ",".join(f"'{loc}'" for loc in result_list)
         return result_list_str
@@ -69,9 +70,9 @@ def get_average_rate_prices():
 
     base_sql_str = f"""
     SELECT TO_CHAR(day, 'YYYY-MM-DD') AS day,
-       CASE 
-           WHEN COUNT(price) >= 3 THEN AVG(price)
-           ELSE NULL 
+       CASE
+           WHEN COUNT(price) >= 3 THEN AVG(price)::int
+           ELSE NULL
        END AS average_price
     FROM prices
     WHERE orig_code IN ({origin_ports})
