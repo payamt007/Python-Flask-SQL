@@ -3,6 +3,7 @@ import os
 
 import redis
 from flask import Blueprint, jsonify, make_response, request
+from flask_jwt_extended import jwt_required
 from sqlalchemy import text
 
 from app.blueprints.core.validators import validate
@@ -95,3 +96,9 @@ def get_average_rate_prices():
 @limiter.limit("2 per minute")
 def test_rate_limit():
     return "Limited Content"
+
+
+@core_api.route("/protected")
+@jwt_required()
+def sample_protected_resource():
+    return "Secret Value!"
