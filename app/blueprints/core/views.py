@@ -1,7 +1,9 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, make_response
 from sqlalchemy import text
 
 from app.db import engine
+from app.blueprints.core.validators import validate
+
 
 core_api = Blueprint("core_api", __name__)
 
@@ -35,6 +37,11 @@ def get_average_rate_prices():
     date_to = request.args.get("date_to")
     origin = request.args.get("origin")
     destination = request.args.get("destination")
+
+    errors = validate(date_from, date_to, origin, destination)
+
+    if errors:
+        return make_response(jsonify({"errors": errors}), 400)
 
     if len(origin) != 5:  # origin is a region slug
         origin_ports = get_ports_for_region(origin)
