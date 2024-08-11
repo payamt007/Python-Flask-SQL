@@ -5,6 +5,8 @@ from flask import Flask
 from flask.json.provider import DefaultJSONProvider
 from flask_jwt_extended import JWTManager
 
+from app.blueprints.rate_limit.base import limiter
+
 
 # Custom JSON encoder to handle Decimal objects returned by SQLAlchemy raw queries
 class CustomJSONEncoder(DefaultJSONProvider):
@@ -23,8 +25,8 @@ def create_app(config_filename="config.py"):
 
     app.config.from_prefixed_env()
 
-    from app.blueprints.core.views import core_api
     from app.blueprints.auth.views import auth
+    from app.blueprints.core.views import core_api
 
     app.register_blueprint(core_api)
     app.register_blueprint(auth, url_prefix="/auth")
@@ -34,6 +36,9 @@ def create_app(config_filename="config.py"):
 
     app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
     JWTManager(app)
+
+    # Initializing the limiter with the app
+    limiter.init_app(app)
 
     return app
 

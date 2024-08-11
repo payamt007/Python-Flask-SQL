@@ -1,13 +1,14 @@
-from flask import Blueprint, jsonify, request, make_response
-from sqlalchemy import text
-
-from app.db import engine
-from app.blueprints.core.validators import validate
-from app.utils import decimal_json_encoder
-
-import redis
 import json
 import os
+
+import redis
+from flask import Blueprint, jsonify, make_response, request
+from sqlalchemy import text
+
+from app.blueprints.core.validators import validate
+from app.blueprints.rate_limit.base import limiter
+from app.db import engine
+from app.utils import decimal_json_encoder
 
 core_api = Blueprint("core_api", __name__)
 
@@ -88,3 +89,9 @@ def get_average_rate_prices():
             ex=10  # Expiration time of result is cache in seconds
         )
         return jsonify(rows)
+
+
+@core_api.route("/rate-limit")
+@limiter.limit("2 per minute")
+def test_rate_limit():
+    return "Limited Content"
