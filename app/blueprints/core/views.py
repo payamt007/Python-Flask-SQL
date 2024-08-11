@@ -3,7 +3,11 @@ from sqlalchemy import text
 
 from app.db import engine
 from app.blueprints.core.validators import validate
+from app.utils import decimal_json_encoder
 
+import redis
+import json
+import os
 
 core_api = Blueprint("core_api", __name__)
 
@@ -43,6 +47,15 @@ def get_average_rate_prices():
     if errors:
         return make_response(jsonify({"errors": errors}), 400)
 
+    cache = redis.Redis.from_url(os.environ.get("CACHE_URL"))
+
+    # First cache is check to find cached result
+    cached_query_result = cache.get(
+        f"mini_flask_app:{date_from}-{date_to}-{origin}-{destination}"
+    )
+    if cached_query_result:
+        return json.loads(cached_query_result.decode())
+
     if len(origin) != 5:  # origin is a region slug
         origin_ports = get_ports_for_region(origin)
     else:
@@ -68,4 +81,10 @@ def get_average_rate_prices():
     with engine.connect() as conn:
         results = conn.execute(text(base_sql_str))  # SQLAlchemy used for executing RAW queries using `text` utility
         rows = [dict(row._mapping) for row in results]
+        # Cache the result of the query for 10 seconds
+        cache.set(
+            name=f"mini_flask_app:{date_from}-{date_to}-{origin}-{destination}",  # key of cache
+            value=json.dumps(rows, default=decimal_json_encoder),  # Serialized query result to save in cache
+            ex=10  # Expiration time of result is cache in seconds
+        )
         return jsonify(rows)
