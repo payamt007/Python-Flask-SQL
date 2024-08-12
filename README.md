@@ -34,6 +34,7 @@ docker compose exec api coverage run -m pytest && coverage report -m
 
 The project was developed using **Python**, **Flask**, **RAW SQL**. The main intent was avoiding using any ORM and
 follow simple and easy to understand code structure.
+_It took me about 4 hours to complete this project._
 
 * Python (Flask)
 * Redis
@@ -42,7 +43,7 @@ follow simple and easy to understand code structure.
 ### Structure
 
 The project was developed using Flask blueprint structure for better modularity. The blueprints are
-inside of app directory in separate folders.
+inside of `app` directory in separate folders.
 The main module that include the answer of the task is `core` module.
 The app is run with [gunicorn](https://gunicorn.org/) which is production grade wsgi server for Python based web servers
 like Flask and Django.
@@ -53,9 +54,10 @@ define number of its worker if is needed.
 gunicorn wsgi:application --bind 0.0.0.0:8000
 ```
 
-_Please note that we don't include `.env` files inside project repository, but here, the reason of including this `.env`
-files inside project directory was easing the processing of running project, We the app is run by Kubernetes or similar
-platform environmental variables provided by DevOps platform for the application._
+_Please note that we normally don't include `.env` files inside the project repository. However, in this case, the reason
+for including this `.env` file inside the project directory is to simplify the process of running the project. When the
+app is run by Kubernetes or a similar platform, environment variables are provided by the DevOps platform and injected
+into the application._
 
 ### Core SQL Solution
 
