@@ -21,6 +21,7 @@ Flask-Limiter = { version = "^3", extras = ["redis"] }
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8"
+coverage = "^7"
 
 
 [tool.poetry.group.dev.dependencies]

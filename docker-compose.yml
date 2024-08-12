@@ -21,14 +21,6 @@ services:
     image: redis:7.4-alpine
     ports:
       - "6380:6379"
-#  db_optimized:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile-DB-optimized
-#    ports:
-#      - "5434:5432"
-#    volumes:
-#      - postgres_optimized_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:

@@ -5,7 +5,7 @@
 -- Dumped from database version 16.3 (Debian 16.3-1.pgdg120+1)
 -- Dumped by pg_dump version 16.3
 
--- Started on 2024-08-12 09:33:09
+-- Started on 2024-08-12 13:35:52
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 2 (class 3079 OID 16434)
+-- TOC entry 2 (class 3079 OID 16384)
 -- Name: ltree; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
 
 
 --
--- TOC entry 3549 (class 0 OID 0)
+-- TOC entry 3550 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION ltree; Type: COMMENT; Schema: -; Owner: 
 --
@@ -40,7 +40,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 216 (class 1259 OID 16384)
+-- TOC entry 216 (class 1259 OID 16569)
 -- Name: ports; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -55,7 +55,7 @@ CREATE TABLE public.ports (
 ALTER TABLE public.ports OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 16389)
+-- TOC entry 217 (class 1259 OID 16574)
 -- Name: prices; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -70,7 +70,7 @@ CREATE TABLE public.prices (
 ALTER TABLE public.prices OWNER TO postgres;
 
 --
--- TOC entry 221 (class 1259 OID 24616)
+-- TOC entry 218 (class 1259 OID 16579)
 -- Name: prices_partitioned; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -86,7 +86,7 @@ PARTITION BY RANGE (day);
 ALTER TABLE public.prices_partitioned OWNER TO postgres;
 
 --
--- TOC entry 222 (class 1259 OID 24619)
+-- TOC entry 219 (class 1259 OID 16582)
 -- Name: prices_2016_one_third; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -101,7 +101,7 @@ CREATE TABLE public.prices_2016_one_third (
 ALTER TABLE public.prices_2016_one_third OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 24629)
+-- TOC entry 220 (class 1259 OID 16587)
 -- Name: prices_2016_three_third; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -116,7 +116,7 @@ CREATE TABLE public.prices_2016_three_third (
 ALTER TABLE public.prices_2016_three_third OWNER TO postgres;
 
 --
--- TOC entry 223 (class 1259 OID 24624)
+-- TOC entry 221 (class 1259 OID 16592)
 -- Name: prices_2016_two_third; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -131,7 +131,7 @@ CREATE TABLE public.prices_2016_two_third (
 ALTER TABLE public.prices_2016_two_third OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 16394)
+-- TOC entry 222 (class 1259 OID 16597)
 -- Name: regions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -146,7 +146,7 @@ CREATE TABLE public.regions (
 ALTER TABLE public.regions OWNER TO postgres;
 
 --
--- TOC entry 220 (class 1259 OID 16424)
+-- TOC entry 223 (class 1259 OID 16602)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -160,7 +160,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 16423)
+-- TOC entry 224 (class 1259 OID 16607)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -175,8 +175,8 @@ CREATE SEQUENCE public.users_id_seq
 ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3550 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 3551 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -192,7 +192,7 @@ ALTER TABLE ONLY public.prices_partitioned ATTACH PARTITION public.prices_2016_o
 
 
 --
--- TOC entry 3379 (class 0 OID 0)
+-- TOC entry 3378 (class 0 OID 0)
 -- Name: prices_2016_three_third; Type: TABLE ATTACH; Schema: public; Owner: postgres
 --
 
@@ -200,7 +200,7 @@ ALTER TABLE ONLY public.prices_partitioned ATTACH PARTITION public.prices_2016_t
 
 
 --
--- TOC entry 3378 (class 0 OID 0)
+-- TOC entry 3379 (class 0 OID 0)
 -- Name: prices_2016_two_third; Type: TABLE ATTACH; Schema: public; Owner: postgres
 --
 
@@ -208,7 +208,7 @@ ALTER TABLE ONLY public.prices_partitioned ATTACH PARTITION public.prices_2016_t
 
 
 --
--- TOC entry 3380 (class 2604 OID 16427)
+-- TOC entry 3380 (class 2604 OID 16608)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -216,7 +216,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3536 (class 0 OID 16384)
+-- TOC entry 3537 (class 0 OID 16569)
 -- Dependencies: 216
 -- Data for Name: ports; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -369,7 +369,7 @@ GBSSH	South Shields	uk_sub	northern_europe.north_europe_sub.uk_sub.GBSSH
 
 
 --
--- TOC entry 3537 (class 0 OID 16389)
+-- TOC entry 3538 (class 0 OID 16574)
 -- Dependencies: 217
 -- Data for Name: prices; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -53435,8 +53435,8 @@ CNSGH	GBFXT	2016-01-04	100500
 
 
 --
--- TOC entry 3541 (class 0 OID 24619)
--- Dependencies: 222
+-- TOC entry 3539 (class 0 OID 16582)
+-- Dependencies: 219
 -- Data for Name: prices_2016_one_third; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -67989,8 +67989,8 @@ CNSGH	GBFXT	2016-01-04	100500
 
 
 --
--- TOC entry 3543 (class 0 OID 24629)
--- Dependencies: 224
+-- TOC entry 3540 (class 0 OID 16587)
+-- Dependencies: 220
 -- Data for Name: prices_2016_three_third; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -90098,8 +90098,8 @@ CNYTN	NOORK	2016-01-31	1722
 
 
 --
--- TOC entry 3542 (class 0 OID 24624)
--- Dependencies: 223
+-- TOC entry 3541 (class 0 OID 16592)
+-- Dependencies: 221
 -- Data for Name: prices_2016_two_third; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -106521,8 +106521,8 @@ CNYTN	NOORK	2016-01-19	1720
 
 
 --
--- TOC entry 3538 (class 0 OID 16394)
--- Dependencies: 218
+-- TOC entry 3542 (class 0 OID 16597)
+-- Dependencies: 222
 -- Data for Name: regions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -106551,8 +106551,8 @@ uk_main	UK Main	north_europe_main	northern_europe.north_europe_main.uk_main
 
 
 --
--- TOC entry 3540 (class 0 OID 16424)
--- Dependencies: 220
+-- TOC entry 3543 (class 0 OID 16602)
+-- Dependencies: 223
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -106562,8 +106562,8 @@ COPY public.users (id, username, password) FROM stdin;
 
 
 --
--- TOC entry 3551 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 3552 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -106571,7 +106571,7 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 
 --
--- TOC entry 3384 (class 2606 OID 16400)
+-- TOC entry 3384 (class 2606 OID 16610)
 -- Name: ports ports_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -106580,7 +106580,7 @@ ALTER TABLE ONLY public.ports
 
 
 --
--- TOC entry 3388 (class 2606 OID 16402)
+-- TOC entry 3389 (class 2606 OID 16612)
 -- Name: regions regions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -106589,7 +106589,7 @@ ALTER TABLE ONLY public.regions
 
 
 --
--- TOC entry 3381 (class 1259 OID 24636)
+-- TOC entry 3381 (class 1259 OID 16613)
 -- Name: path_gist_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -106597,7 +106597,7 @@ CREATE INDEX path_gist_idx ON public.ports USING gist (path);
 
 
 --
--- TOC entry 3382 (class 1259 OID 24637)
+-- TOC entry 3382 (class 1259 OID 16614)
 -- Name: path_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -106605,7 +106605,15 @@ CREATE INDEX path_idx ON public.ports USING btree (path);
 
 
 --
--- TOC entry 3385 (class 1259 OID 24635)
+-- TOC entry 3385 (class 1259 OID 16642)
+-- Name: prices_day_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX prices_day_index ON public.prices USING btree (day);
+
+
+--
+-- TOC entry 3386 (class 1259 OID 16615)
 -- Name: prices_dest_code_index; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -106613,7 +106621,7 @@ CREATE INDEX prices_dest_code_index ON public.prices USING btree (dest_code);
 
 
 --
--- TOC entry 3386 (class 1259 OID 24634)
+-- TOC entry 3387 (class 1259 OID 16616)
 -- Name: prices_orig_code_index; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -106621,7 +106629,7 @@ CREATE INDEX prices_orig_code_index ON public.prices USING btree (orig_code);
 
 
 --
--- TOC entry 3389 (class 2606 OID 16403)
+-- TOC entry 3390 (class 2606 OID 16617)
 -- Name: ports ports_parent_slug_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -106630,7 +106638,7 @@ ALTER TABLE ONLY public.ports
 
 
 --
--- TOC entry 3390 (class 2606 OID 16408)
+-- TOC entry 3391 (class 2606 OID 16622)
 -- Name: prices prices_dest_code_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -106639,7 +106647,7 @@ ALTER TABLE ONLY public.prices
 
 
 --
--- TOC entry 3391 (class 2606 OID 16413)
+-- TOC entry 3392 (class 2606 OID 16627)
 -- Name: prices prices_orig_code_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -106648,7 +106656,7 @@ ALTER TABLE ONLY public.prices
 
 
 --
--- TOC entry 3392 (class 2606 OID 16418)
+-- TOC entry 3393 (class 2606 OID 16632)
 -- Name: regions regions_parent_slug_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -106656,7 +106664,7 @@ ALTER TABLE ONLY public.regions
     ADD CONSTRAINT regions_parent_slug_fkey FOREIGN KEY (parent_slug) REFERENCES public.regions(slug);
 
 
--- Completed on 2024-08-12 09:33:09
+-- Completed on 2024-08-12 13:35:52
 
 --
 -- PostgreSQL database dump complete
