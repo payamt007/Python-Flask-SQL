@@ -17,11 +17,13 @@ curl "http://127.0.0.1:8000/rates?date_from=2016-01-01&date_to=2016-01-10&origin
 ### **Running the tests**
 
 If you want only run tests:
+
 ```shell
 docker compose exec api pytest
 ```
 
 If you want to run the tests and see test coverage report:
+
 ```shell
 docker compose exec api coverage run -m pytest && coverage report -m
 ```
@@ -47,8 +49,8 @@ The main module that include the answer of the task is `core` module.
 
 For doing the task a RAW SQL was used inside a flask view and SQLAlchemy connector with PostgresSQL :
 
-```SQL
-   -- Tree was traversed using RECURSION CTE of SQL
+```sql
+-- Tree hierarchy of region slugs was traversed using RECURSION CTE of SQL
 WITH RECURSIVE region_ports AS (SELECT code
                                 FROM ports
                                 WHERE parent_slug = '{region_slug}'
@@ -57,6 +59,8 @@ WITH RECURSIVE region_ports AS (SELECT code
                                 FROM ports p
                                          JOIN regions r ON r.slug = p.parent_slug
                                 WHERE r.parent_slug = '{region_slug}')
+
+-- Result of previous query injected to following query using Python f-strings inside a flask route handler
 SELECT code
 FROM region_ports;
 
@@ -81,8 +85,8 @@ In order to optimize database design several strategies can be used :
 
 1. **Add indexes**
 
-   In current database we can create indexes on day, code, orig_code, des_code columns to enhance query speed. We use
-   default B-Tree index type that is supported by PostgreSQL
+   In current database we can create indexes on `day`, code, `orig_code`, `des_code` columns to enhance query speed. We use
+   default B-Tree index type that is supported by PostgreSQL because most operation in queries include `=` or `<`, '>'
 
 ```sql
 CREATE INDEX prices_orig_code_index
@@ -90,6 +94,9 @@ CREATE INDEX prices_orig_code_index
 
 CREATE INDEX prices_dest_code_index
     on prices (dest_code);
+
+CREATE INDEX prices_day_index
+    on prices (day);
 ```
 
 With adding this new indexes the original query works pretty well.
@@ -121,13 +128,13 @@ WITH RECURSIVE region_paths AS
                          region_paths rp
                          ON r.parent_slug = rp.slug)
 
--- Update content of path column of origins table and inserting tree data inside it
+-- Updating content of path column of origins table and inserting tree data inside it
 UPDATE regions
 SET path = region_paths.path
 FROM region_paths
 WHERE regions.slug = region_paths.slug;
 
--- Update content of path column of ports table and inserting tree data inside it
+-- Updating content of path column of ports table and inserting tree data inside it
 UPDATE ports
 SET path = (SELECT CONCAT(r.path::text, '.', ports.code) :: ltree
             FROM regions r
