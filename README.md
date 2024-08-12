@@ -45,9 +45,13 @@ The project was developed using different module in Flask blueprint structure fo
 inside of app directory in separate folders.
 The main module that include the answer of the task is `core` module.
 
+_Please note that we don't include `.env` files inside project repository, but here, the reason of including this `.env` files
+inside project directory was easing the processing of running project, We the app is run by Kubernetes or similar platform 
+environmental variables provided by DevOps platform for the application._
+
 ### Core SQL Solution
 
-For doing the task a RAW SQL was used inside a flask view and SQLAlchemy connector with PostgresSQL :
+For doing the task a RAW SQL was used inside a flask view and SQLAlchemy connector with PostgreSQL :
 
 ```sql
 -- Tree hierarchy of region slugs was traversed using RECURSION CTE of SQL

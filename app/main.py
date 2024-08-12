@@ -40,7 +40,7 @@ def create_app(config_filename="config.py"):
     app = Flask(__name__)
     app.config.from_pyfile(config_filename)
     app.config.from_mapping(
-        SECRET_KEY="dev",
+        SECRET_KEY=os.environ.get("SECRET_KEY"),
     )
 
     app.config.from_prefixed_env()
