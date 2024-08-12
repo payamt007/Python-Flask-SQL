@@ -8,7 +8,7 @@ This project can easily be running following command:
 docker compose up -d
 ```
 
-and test API using:
+Examin API using following command:
 
 ```shell
 curl "http://127.0.0.1:8000/rates?date_from=2016-01-01&date_to=2016-01-10&origin=CNSGH&destination=north_europe_main"
@@ -16,8 +16,14 @@ curl "http://127.0.0.1:8000/rates?date_from=2016-01-01&date_to=2016-01-10&origin
 
 ### **Running the tests**
 
+If you want only run tests:
 ```shell
 docker compose exec api pytest
+```
+
+If you want to run the tests and see test coverage report:
+```shell
+docker compose exec api coverage run -m pytest && coverage report -m
 ```
 
 ### Description
@@ -49,16 +55,16 @@ WITH RECURSIVE region_ports AS (SELECT code
                                 UNION ALL
                                 SELECT p.code
                                 FROM ports p
-                                        JOIN regions r ON r.slug = p.parent_slug
+                                         JOIN regions r ON r.slug = p.parent_slug
                                 WHERE r.parent_slug = '{region_slug}')
 SELECT code
 FROM region_ports;
 
 SELECT TO_CHAR(day, 'YYYY-MM-DD') AS day,
        CASE
-          WHEN COUNT(price) >= 3 THEN AVG(price)::int
-          ELSE NULL
-          END                     AS average_price
+           WHEN COUNT(price) >= 3 THEN AVG(price)::int
+           ELSE NULL
+           END                    AS average_price
 FROM prices
 WHERE orig_code IN ({origin_ports})
   AND dest_code IN ({destination_ports})
@@ -148,20 +154,20 @@ curl "http://127.0.0.1:8000/new/rates?date_from=2016-01-01&date_to=2016-01-10&or
 ```sql
 CREATE TABLE prices_partitioned
 (
-   orig_code TEXT    NOT NULL,
-   dest_code TEXT    NOT NULL,
-   day       DATE    NOT NULL,
-   price     INTEGER NOT NULL
+    orig_code TEXT    NOT NULL,
+    dest_code TEXT    NOT NULL,
+    day       DATE    NOT NULL,
+    price     INTEGER NOT NULL
 ) PARTITION BY RANGE (day);
 
 CREATE TABLE prices_2016_one_third PARTITION OF prices_partitioned
-   FOR VALUES FROM ('2016-01-01') TO ('2016-01-11');
+    FOR VALUES FROM ('2016-01-01') TO ('2016-01-11');
 
 CREATE TABLE prices_2016_two_third PARTITION OF prices_partitioned
-   FOR VALUES FROM ('2016-01-11') TO ('2016-01-20');
+    FOR VALUES FROM ('2016-01-11') TO ('2016-01-20');
 
 CREATE TABLE prices_2016_three_third PARTITION OF prices_partitioned
-   FOR VALUES FROM ('2016-01-20') TO ('2016-02-01');
+    FOR VALUES FROM ('2016-01-20') TO ('2016-02-01');
 
 INSERT INTO prices_partitioned (orig_code, dest_code, day, price)
 SELECT orig_code, dest_code, day, price
@@ -193,9 +199,13 @@ first cache is checked if there any cached results, and if not found in cache, t
 databased and result of query would be stored in Redis Cache.
 
 #### CI-CD
-A GitHub actions CI-CD provided for projects that runs unit test and also check code formatting in each commit. For stability of code formatting instructions was defined
-in `pyproject.toml` file in project root directory and this checks formatting and linting based on [ruff](https://docs.astral.sh/ruff/) linter. the configuration file 
-for formatting is based of [pre-commit](https://pre-commit.com/) and pre commit settings was defined in `.pre-commit-config.yaml` file.
+
+A GitHub actions CI-CD provided for projects that runs unit test and also check code formatting in each commit. For
+stability of code formatting instructions was defined
+in `pyproject.toml` file in project root directory and this checks formatting and linting based
+on [ruff](https://docs.astral.sh/ruff/) linter. the configuration file
+for formatting is based of [pre-commit](https://pre-commit.com/) and pre commit settings was defined
+in `.pre-commit-config.yaml` file.
 Next stage of CI is running tests that defines in `tests` directory in `app` folder.
 
 #### Authentication
@@ -234,7 +244,8 @@ curl --location 'http://127.0.0.1:8000/protected' --header 'Authorization: Beare
 #### Rate limiting
 
 A production grade API needs rate limit to prevent access to some part of API with predefined limits. I implemented rate
-limiting for this flak based API using [Flask Limiter](https://flask-limiter.readthedocs.io/en/stable/) and Redis Backend.
+limiting for this flak based API using [Flask Limiter](https://flask-limiter.readthedocs.io/en/stable/) and Redis
+Backend.
 A endpoint library was protectec by rate limiting hat nly allows to make 2 request per minute, you can check it here:
 
 ```shell
