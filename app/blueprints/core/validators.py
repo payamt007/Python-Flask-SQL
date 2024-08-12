@@ -23,13 +23,13 @@ def validate(date_from: str, date_to: str, origin: str, destination: str) -> lis
         errors.append("date_from format is not valid")
     if date_from == date_to:
         errors.append("date_from and date_to couldn't be same!")
-    if origin is None:
+    if not bool(origin):
         errors.append("origin should be determined")
-    if destination is None:
+    if not bool(destination):
         errors.append("destination should be determined")
-    if date_to is None:
+    if not bool(date_to):
         errors.append("date_to should be determined")
-    if date_from is None:
+    if not bool(date_from):
         errors.append("date_from should be determined")
 
     if bool(origin) and not (
