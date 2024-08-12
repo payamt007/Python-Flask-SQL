@@ -39,27 +39,25 @@ The main module that include the answer of the task is `core` module.
 For doing the task a RAW SQL was used inside a flask view and SQLAlchemy connector with PostgresSQL :
 
 ```SQL
+   WITH RECURSIVE region_ports AS (
+                SELECT code FROM ports WHERE parent_slug = '{region_slug}'
+                UNION ALL
+                SELECT p.code FROM ports p
+                JOIN regions r ON r.slug = p.parent_slug
+                WHERE r.parent_slug = '{region_slug}'
+            )
+            SELECT code FROM region_ports;
+
    SELECT TO_CHAR(day, 'YYYY-MM-DD') AS day,
           CASE
-              WHEN COUNT(price) < 3 THEN NULL
-              ELSE ROUND(AVG(price))
-              END
-                                     AS average_price
-   FROM prices
-   WHERE (CASE
-              WHEN '{origin}' ~ '^[a-z]+(_[a-z]+)*$' THEN
-                  orig_code IN (SELECT code FROM ports WHERE parent_slug = '{origin}')
-              ELSE orig_code = '{origin}'
-       END
-       )
-     AND (CASE
-              WHEN '{destination}' ~ '^[a-z]+(_[a-z]+)*$' THEN
-                  dest_code IN (SELECT code FROM ports WHERE parent_slug = '{destination}')
-              ELSE dest_code = '{destination}'
-       END)
-     AND day BETWEEN '{date_from}' AND '{date_to}'
-   GROUP BY day
-   ORDER BY day
+              WHEN COUNT(price) >= 3 THEN AVG(price)::int
+              ELSE NULL
+          END AS average_price
+       FROM prices
+       WHERE orig_code IN ({origin_ports})
+         AND dest_code IN ({destination_ports})
+         AND day BETWEEN '{date_from}' AND '{date_to}'
+       GROUP BY day ORDER BY day;
    ```
 
 `{origin}` and `[destination] ` are inserted with query string in f-string and converted to a fully Working RAW SQL.
@@ -83,7 +81,7 @@ In order to optimize database design several strategies can be used :
    With adding this new indexes the original query works pretty well.
 
 
-2. **Postgres Ltree**
+2. **Postgres Ltree Extension**
 
 We can use PostgreSQL Ltree extension for effectively handle tree structure, first we need to activate the ltree extension and add new ltree column type to port table :
 
@@ -125,7 +123,7 @@ We can use PostgreSQL Ltree extension for effectively handle tree structure, fir
    ```
 
 
-4. **Partitioning**
+3. **Partitioning**
 
    We can also Partition the prices table by the day column. This can speed up queries that filter by date, as the
    database can skip entire partitions that are not relevant. Here for example we can create a new partition price table

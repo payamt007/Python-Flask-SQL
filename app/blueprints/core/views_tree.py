@@ -41,6 +41,8 @@ def get_average_rate_prices():
     """
 
     with engine.connect() as conn:
-        results = conn.execute(text(base_sql_str))  # SQLAlchemy used for executing RAW queries using `text` utility
+        results = conn.execute(
+            text(base_sql_str)
+        )  # SQLAlchemy used for executing RAW queries using `text` utility
         rows = [dict(row._mapping) for row in results]
         return jsonify(rows)
