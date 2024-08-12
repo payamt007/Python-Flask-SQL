@@ -32,9 +32,11 @@ def validate(date_from: str, date_to: str, origin: str, destination: str) -> lis
     if date_from is None:
         errors.append("date_from should be determined")
 
-    if origin and not (region_code_pattern.match(origin) or slug_pattern.match(origin)):
+    if bool(origin) and not (
+        region_code_pattern.match(origin) or slug_pattern.match(origin)
+    ):
         errors.append("origin format is not valid")
-    if destination and not (
+    if bool(destination) and not (
         region_code_pattern.match(destination) or slug_pattern.match(destination)
     ):
         errors.append("destination format is not valid")

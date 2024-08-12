@@ -68,6 +68,10 @@ def get_average_rate_prices():
     else:
         destination_ports = f"'{destination}'"
 
+    # When to code was founded querying the database is not necessary
+    if len(destination_ports) == 0 or len(destination_ports) == 0:
+        return []
+
     base_sql_str = f"""
     SELECT TO_CHAR(day, 'YYYY-MM-DD') AS day,
        CASE
@@ -82,13 +86,17 @@ def get_average_rate_prices():
     """
 
     with engine.connect() as conn:
-        results = conn.execute(text(base_sql_str))  # SQLAlchemy used for executing RAW queries using `text` utility
+        results = conn.execute(
+            text(base_sql_str)
+        )  # SQLAlchemy used for executing RAW queries using `text` utility
         rows = [dict(row._mapping) for row in results]
         # Cache the result of the query for 10 seconds
         cache.set(
             name=f"mini_flask_app:{date_from}-{date_to}-{origin}-{destination}",  # key of cache
-            value=json.dumps(rows, default=decimal_json_encoder),  # Serialized query result to save in cache
-            ex=10  # Expiration time of result is cache in seconds
+            value=json.dumps(
+                rows, default=decimal_json_encoder
+            ),  # Serialized query result to save in cache
+            ex=10,  # Expiration time of result is cache in seconds
         )
         return jsonify(rows)
 
