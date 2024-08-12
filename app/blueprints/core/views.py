@@ -68,6 +68,10 @@ def get_average_rate_prices():
     else:
         destination_ports = f"'{destination}'"
 
+    # When to code was founded querying the database is not necessary
+    if len(destination_ports) == 0 or len(destination_ports) == 0:
+        return []
+
     base_sql_str = f"""
     SELECT TO_CHAR(day, 'YYYY-MM-DD') AS day,
        CASE

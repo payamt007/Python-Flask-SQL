@@ -221,8 +221,8 @@ curl --location 'http://127.0.0.1:8000/protected' --header 'Authorization: Beare
 
 #### Rate limiting
 
-A production grade API needs rate limit to prevent access to some part of API with predefined limits. I emplenet rate
-limi for this flak based API using [Flask Limiter](https://flask-limiter.readthedocs.io/en/stable/) and Redis Backend.
+A production grade API needs rate limit to prevent access to some part of API with predefined limits. I implemented rate
+limiting for this flak based API using [Flask Limiter](https://flask-limiter.readthedocs.io/en/stable/) and Redis Backend.
 A endpoint library was protectec by rate limiting hat nly allows to make 2 request per minute, you can check it here:
 
 ```shell
