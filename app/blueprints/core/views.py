@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 import redis
@@ -12,6 +13,8 @@ from app.db import engine
 from app.utils import decimal_json_encoder
 
 core_api = Blueprint("core_api", __name__)
+
+logger = logging.getLogger(__name__)
 
 
 @core_api.route("/")
@@ -86,19 +89,27 @@ def get_average_rate_prices():
     """
 
     with engine.connect() as conn:
-        results = conn.execute(
-            text(base_sql_str)
-        )  # SQLAlchemy used for executing RAW queries using `text` utility
-        rows = [dict(row._mapping) for row in results]
-        # Cache the result of the query for 10 seconds
-        cache.set(
-            name=f"mini_flask_app:{date_from}-{date_to}-{origin}-{destination}",  # key of cache
-            value=json.dumps(
-                rows, default=decimal_json_encoder
-            ),  # Serialized query result to save in cache
-            ex=10,  # Expiration time of result is cache in seconds
-        )
-        return jsonify(rows)
+        try:
+            results = conn.execute(
+                text(base_sql_str)
+            )  # SQLAlchemy used for executing RAW queries using `text` utility
+            rows = [dict(row._mapping) for row in results]
+            # Cache the result of the query for 10 seconds
+            cache.set(
+                name=f"mini_flask_app:{date_from}-{date_to}-{origin}-{destination}",  # key of cache
+                value=json.dumps(
+                    rows, default=decimal_json_encoder
+                ),  # Serialized query result to save in cache
+                ex=10,  # Expiration time of result is cache in seconds
+            )
+            return jsonify(rows)
+        except Exception as e:
+            # Logs are consumed by log collection tools like Datadog, splunk or Logstash
+            logger.error(f"Error in Database connection , {e}")
+            # Client side should know the error is in database connection with a proper description
+            return make_response(
+                jsonify({"errors": "Error in Database connection"}), 500
+            )
 
 
 @core_api.route("/rate-limit")
