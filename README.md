@@ -2,7 +2,7 @@
 
 ### **Run API**
 
-This project can easily be run using following command:
+This project can easily be running following command:
 
 ```shell
 docker compose up -d
@@ -185,6 +185,12 @@ Here I use Redis, Because it has many greate features and we can stor very diffe
 a request to get the result, In backend side,
 first cache is checked if there any cached results, and if not found in cache, the actual query executed against
 databased and result of query would be stored in Redis Cache.
+
+#### CI-CD
+A GitHub actions CI-CD provided for projects that runs unit test and also check code formatting in each commit. For stability of code formatting instructions was defined
+in `pyproject.toml` file in project root directory and this checks formatting and linting based on [ruff](https://docs.astral.sh/ruff/) linter. the configuration file 
+for formatting is based of [pre-commit](https://pre-commit.com/) and pre commit settings was defined in `.pre-commit-config.yaml` file.
+Next stage of CI is running tests that defines in `tests` directory in `app` folder.
 
 #### Authentication
 

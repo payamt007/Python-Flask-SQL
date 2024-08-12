@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - dev
+      - main
 jobs:
   pri-commit:
     runs-on: ubuntu-latest
