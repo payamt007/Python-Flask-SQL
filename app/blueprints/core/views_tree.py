@@ -7,7 +7,7 @@ from app.db import engine
 tree_api = Blueprint("tree_api", __name__)
 
 
-@tree_api.route("/trates")
+@tree_api.route("/rates")
 def get_average_rate_prices():
     date_from = request.args.get("date_from")
     date_to = request.args.get("date_to")

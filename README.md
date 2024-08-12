@@ -133,6 +133,12 @@ CREATE INDEX path_gist_idx ON ports USING GIST (path);
 CREATE INDEX path_idx ON ports USING BTREE (path);
    ```
 
+You can examine results from modified database model design that uses PostgreSQL ltree column with this command:
+
+```shell
+curl "http://127.0.0.1:8000/new/rates?date_from=2016-01-01&date_to=2016-01-10&origin=CNSGH&destination=north_europe_main"
+```
+
 3. **Partitioning**
 
    We can also Partition the prices table by the day column. This can speed up queries that filter by date, as the
